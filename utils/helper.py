@@ -46,4 +46,9 @@ def save_vocab(vocab, model_dir: str):
     """Save vocab file to `model_dir` directory"""
     vocab_path = os.path.join(model_dir, "vocab.pt")
     torch.save(vocab, vocab_path)
+
+def load_vocab(path: str):
+    """Load vocab file from `model_dir` directory"""
+    vocab = torch.load(path)
+    return vocab
     

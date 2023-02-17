@@ -112,6 +112,14 @@ class Trainer:
         """Save final model to `self.model_dir` directory"""
         model_path = os.path.join(self.model_dir, "model.pt")
         torch.save(self.model, model_path)
+    
+    def load_model(self, path=None):
+        """Load model from `self.model_dir` directory"""
+        if (self.device.type == "cpu"):
+            self.model = torch.load(path, map_location=torch.device('cpu'))
+        else:
+            self.model = torch.load(path)
+        self.model.to(self.device)
 
     def save_loss(self):
         """Save train/val loss as json file to `self.model_dir` directory"""
