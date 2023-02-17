@@ -1,3 +1,4 @@
+pyyaml
 nb-black
 numpy
 torch
