@@ -120,11 +120,7 @@ def collate_skipgram(batch, text_pipeline):
     return batch_input, batch_output
 
 
-def get_dataloader_and_vocab(
-    model_name, ds_name, ds_type, data_dir, batch_size, shuffle, vocab=None
-):
-
-    data_iter = get_data_iterator(ds_name, ds_type, data_dir)
+def get_custom_dataloader_and_vocab(model_name, data_iter, batch_size, shuffle, vocab=None):
     tokenizer = get_english_tokenizer()
 
     if not vocab:
@@ -146,4 +142,11 @@ def get_dataloader_and_vocab(
         collate_fn=partial(collate_fn, text_pipeline=text_pipeline),
     )
     return dataloader, vocab
+
+
+def get_dataloader_and_vocab(
+    model_name, ds_name, ds_type, data_dir, batch_size, shuffle, vocab=None
+):
+    data_iter = get_data_iterator(ds_name, ds_type, data_dir)
+    return get_custom_dataloader_and_vocab(model_name, data_iter, batch_size, shuffle, vocab)
     
