@@ -3,6 +3,8 @@ import numpy as np
 import json
 import torch
 
+import gc
+
 
 class Trainer:
     """Main class for model training"""
@@ -57,6 +59,10 @@ class Trainer:
 
             if self.checkpoint_frequency:
                 self._save_checkpoint(epoch)
+            
+            gc.collect()
+            if (torch.cuda.is_available()):
+                torch.cuda.empty_cache()
 
     def _train_epoch(self):
         self.model.train()
