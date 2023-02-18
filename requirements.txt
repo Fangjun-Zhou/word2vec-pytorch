@@ -1,7 +1,12 @@
 pyyaml
 nb-black
 numpy
+
+# Uncomment the following line if you want to use GPU.
+# -f https://download.pytorch.org/whl/cu117
 torch
+# -f https://download.pytorch.org/whl/cu117
 torchtext
+
 pandas
 scikit-learn
