@@ -1,4 +1,5 @@
 import os
+import copy
 import numpy as np
 import json
 import torch
@@ -37,12 +38,17 @@ class Trainer:
         self.lr_scheduler = lr_scheduler
         self.device = device
         self.model_dir = model_dir
+        # Check if the path exists, if not create it.
+        if not os.path.exists(self.model_dir):
+            os.makedirs(self.model_dir)
         self.model_name = model_name
 
         self.loss = {"train": [], "val": []}
         self.model.to(self.device)
 
     def train(self):
+        best_val_loss = np.inf
+        best_model = copy.deepcopy(self.model.state_dict())
         for epoch in range(self.epochs):
             self._train_epoch()
             self._validate_epoch()
@@ -56,6 +62,10 @@ class Trainer:
             )
 
             self.lr_scheduler.step()
+            
+            if self.loss["val"][-1] < best_val_loss:
+                best_val_loss = self.loss["val"][-1]
+                best_model = copy.deepcopy(self.model.state_dict())
 
             if self.checkpoint_frequency:
                 self._save_checkpoint(epoch)
@@ -63,6 +73,10 @@ class Trainer:
             gc.collect()
             if (torch.cuda.is_available()):
                 torch.cuda.empty_cache()
+        
+        model_path = f"best_val_model_{best_val_loss:.2f}.pt"
+        model_path = os.path.join(self.model_dir, model_path)
+        torch.save(best_model, model_path)
 
     def _train_epoch(self):
         self.model.train()
