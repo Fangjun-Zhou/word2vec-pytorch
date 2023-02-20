@@ -69,7 +69,7 @@ class Trainer:
                 )
             )
             print(
-                "Time elapsed: {:.2f} min, average epoch time: {:.2f}, predicting finish time: {:.2f}".format(
+                "Time elapsed: {:.2f} min, average epoch time: {:.2f} min, predicting finish time: {:.2f} min".format(
                     (time.time() - start_time) / 60,
                     (time.time() - start_time) / (epoch + 1) / 60,
                     (time.time() - start_time) / (epoch + 1) / 60 * self.epochs,
