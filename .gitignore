@@ -3,3 +3,5 @@ data/
 .data/
 .ipynb_checkpoints/
 __pycache__/
+
+checkpoints.zip
