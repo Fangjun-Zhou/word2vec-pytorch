@@ -24,13 +24,13 @@ from utils.helper import (
 MODEL_DIR = os.path.join(*["models", "skipgram"])
 MODEL_NAME = "skipgram"
 
-BATCH_SIZE = 96
+BATCH_SIZE = 64
 SHUFFLE = True
-DATA_SET_SIZE = 20000
+DATA_SET_SIZE = 35000
 
 OPTIMIZER = "Adam"
 LEARNING_RATE = 0.025
-EPOCHS = 64
+EPOCHS = 200
 TRAIN_STEPS = None
 VAL_STEPS = None
 

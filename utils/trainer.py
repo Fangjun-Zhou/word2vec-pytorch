@@ -3,7 +3,7 @@ import copy
 import numpy as np
 import json
 import torch
-
+import time
 import gc
 
 
@@ -55,6 +55,8 @@ class Trainer:
     def train(self):
         best_val_loss = np.inf
         best_model = copy.deepcopy(self.model.state_dict())
+        # Record the start time.
+        start_time = time.time()
         for epoch in range(self.epochs):
             self._train_epoch()
             self._validate_epoch()
@@ -64,6 +66,13 @@ class Trainer:
                     self.epochs,
                     self.loss["train"][-1],
                     self.loss["val"][-1],
+                )
+            )
+            print(
+                "Time elapsed: {:.2f} min, average epoch time: {:.2f}, predicting finish time: {:.2f}".format(
+                    (time.time() - start_time) / 60,
+                    (time.time() - start_time) / (epoch + 1) / 60,
+                    (time.time() - start_time) / (epoch + 1) / 60 * self.epochs,
                 )
             )
 
