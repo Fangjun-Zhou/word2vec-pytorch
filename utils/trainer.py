@@ -44,6 +44,12 @@ class Trainer:
         self.model_name = model_name
 
         self.loss = {"train": [], "val": []}
+        
+        # Use DataParallel if multiple GPUs are available.
+        if torch.cuda.device_count() > 1:
+            print("Using {} GPUs.".format(torch.cuda.device_count()))
+            self.model = torch.nn.DataParallel(self.model)
+        
         self.model.to(self.device)
 
     def train(self):
