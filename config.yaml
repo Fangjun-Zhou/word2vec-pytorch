@@ -1,16 +1,18 @@
-model_name: cbow
+use_cuda: false
 
-dataset: WikiText2
+model_name: skipgram
+
+dataset: None
 data_dir: data/
-train_batch_size: 96
-val_batch_size: 96
+train_batch_size: 16
+val_batch_size: 16
 shuffle: True
 
 optimizer: Adam
 learning_rate: 0.025
-epochs: 5
-train_steps: 
-val_steps: 
+epochs: 16
+train_steps: -1
+val_steps: -1
 
-checkpoint_frequency: 
-model_dir: weights/cbow_WikiText2
+checkpoint_frequency: 4
+model_dir: models/skipgram_test
