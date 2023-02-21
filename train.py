@@ -31,8 +31,6 @@ def train(
     
     print("Using device:", device)
     
-    os.makedirs(config["model_dir"])
-    
     if data_iter is None:
         train_dataloader, vocab = get_dataloader_and_vocab(
             model_name=config["model_name"],
