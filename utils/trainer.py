@@ -97,6 +97,10 @@ class Trainer:
         self.model.train()
         running_loss = []
 
+        if self.train_steps < 0:
+            batch_num = len(self.train_dataloader)
+        else:
+            batch_num = min(self.train_steps, len(self.train_dataloader))
         for i, batch_data in enumerate(self.train_dataloader, 1):
             inputs = batch_data[0].to(self.device)
             labels = batch_data[1].to(self.device)
@@ -108,6 +112,8 @@ class Trainer:
             self.optimizer.step()
 
             running_loss.append(loss.item())
+            
+            print(f"Batch: {i}/{batch_num}", end="\r")
 
             if i == self.train_steps:
                 break
