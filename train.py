@@ -1,12 +1,14 @@
 import argparse
 import yaml
-import os
 import torch
 import torch.nn as nn
 from torchtext.vocab import Vocab
 from sklearn.model_selection import train_test_split
 
-from utils.dataloader import get_dataloader_and_vocab, get_custom_dataloader_and_vocab
+from utils.dataloader import (
+    get_dataloader_and_vocab,
+    get_custom_dataloader_and_vocab
+)
 from utils.trainer import Trainer
 from utils.helper import (
     get_model_class,
@@ -20,17 +22,17 @@ from utils.helper import (
 def train(
     config,
     data_iter=None,
-    vocab: Vocab=None,
-    transfer_model: nn.Module=None
+    vocab: Vocab = None,
+    transfer_model: nn.Module = None
 ):
     # Check current device.
     if (config["use_cuda"] and torch.cuda.is_available()):
         device = torch.device("cuda")
     else:
         device = torch.device("cpu")
-    
+
     print("Using device:", device)
-    
+
     if data_iter is None:
         train_dataloader, vocab = get_dataloader_and_vocab(
             model_name=config["model_name"],
@@ -79,7 +81,7 @@ def train(
     optimizer_class = get_optimizer_class(config["optimizer"])
     optimizer = optimizer_class(model.parameters(), lr=config["learning_rate"])
     lr_scheduler = get_lr_scheduler(optimizer, config["epochs"], verbose=True)
-    
+
     # If transfer learning is enabled, load the pre-trained model.
     if transfer_model:
         weight = model.embeddings.weight.detach().numpy()
@@ -95,7 +97,6 @@ def train(
         with torch.no_grad():
             model.embeddings.weight.copy_(torch.from_numpy(weight))
         print("Transfer learning enabled. Pre-trained model loaded.")
-        
 
     trainer = Trainer(
         model=model,
@@ -121,13 +122,14 @@ def train(
     save_vocab(vocab, config["model_dir"])
     save_config(config, config["model_dir"])
     print("Model artifacts saved to folder:", config["model_dir"])
-    
-    
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--config', type=str, required=True, help='path to yaml config')
+    parser.add_argument('--config', type=str, required=True,
+                        help='path to yaml config')
     args = parser.parse_args()
-    
+
     with open(args.config, 'r') as stream:
         config = yaml.safe_load(stream)
     train(config)

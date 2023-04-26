@@ -9,7 +9,7 @@ import gc
 
 class Trainer:
     """Main class for model training"""
-    
+
     def __init__(
         self,
         model,
@@ -25,7 +25,7 @@ class Trainer:
         device,
         model_dir,
         model_name,
-    ):  
+    ):
         self.model = model
         self.epochs = epochs
         self.train_dataloader = train_dataloader
@@ -44,12 +44,12 @@ class Trainer:
         self.model_name = model_name
 
         self.loss = {"train": [], "val": []}
-        
+
         # Use DataParallel if multiple GPUs are available.
         if torch.cuda.device_count() > 1:
             print("Using {} GPUs.".format(torch.cuda.device_count()))
             self.model = torch.nn.DataParallel(self.model)
-        
+
         self.model.to(self.device)
 
     def train(self):
@@ -72,23 +72,24 @@ class Trainer:
                 "Time elapsed: {:.2f} min, average epoch time: {:.2f} min, predicting finish time: {:.2f} min".format(
                     (time.time() - start_time) / 60,
                     (time.time() - start_time) / (epoch + 1) / 60,
-                    (time.time() - start_time) / (epoch + 1) / 60 * self.epochs,
+                    (time.time() - start_time) /
+                    (epoch + 1) / 60 * self.epochs,
                 )
             )
 
             self.lr_scheduler.step()
-            
+
             if self.loss["val"][-1] < best_val_loss:
                 best_val_loss = self.loss["val"][-1]
                 best_model = copy.deepcopy(self.model.state_dict())
 
             if self.checkpoint_frequency:
                 self._save_checkpoint(epoch)
-            
+
             gc.collect()
             if (torch.cuda.is_available()):
                 torch.cuda.empty_cache()
-        
+
         model_path = f"best_val_model_{best_val_loss:.2f}.pt"
         model_path = os.path.join(self.model_dir, model_path)
         torch.save(best_model, model_path)
@@ -112,7 +113,7 @@ class Trainer:
             self.optimizer.step()
 
             running_loss.append(loss.item())
-            
+
             print(f"Batch: {i}/{batch_num}", end="\r")
 
             if i == self.train_steps:
@@ -153,7 +154,7 @@ class Trainer:
         """Save final model to `self.model_dir` directory"""
         model_path = os.path.join(self.model_dir, "model.pt")
         torch.save(self.model, model_path)
-    
+
     def load_model(self, path=None):
         """Load model from `self.model_dir` directory"""
         if (self.device.type == "cpu"):

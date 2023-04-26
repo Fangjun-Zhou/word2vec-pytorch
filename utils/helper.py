@@ -23,14 +23,14 @@ def get_optimizer_class(name: str):
     else:
         raise ValueError("Choose optimizer from: Adam")
         return
-    
+
 
 def get_lr_scheduler(optimizer, total_epochs: int, verbose: bool = True):
     """
     Scheduler to linearly decrease learning rate, 
     so thatlearning rate after the last epoch is 0.
     """
-    lr_lambda = lambda epoch: (total_epochs - epoch) / total_epochs
+    def lr_lambda(epoch): return (total_epochs - epoch) / total_epochs
     lr_scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda, verbose=verbose)
     return lr_scheduler
 
@@ -40,15 +40,15 @@ def save_config(config: dict, model_dir: str):
     config_path = os.path.join(model_dir, "config.yaml")
     with open(config_path, "w") as stream:
         yaml.dump(config, stream)
-        
-        
+
+
 def save_vocab(vocab, model_dir: str):
     """Save vocab file to `model_dir` directory"""
     vocab_path = os.path.join(model_dir, "vocab.pt")
     torch.save(vocab, vocab_path)
 
+
 def load_vocab(path: str):
     """Load vocab file from `model_dir` directory"""
     vocab = torch.load(path)
     return vocab
-    
