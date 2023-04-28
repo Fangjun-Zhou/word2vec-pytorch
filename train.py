@@ -2,20 +2,19 @@ import argparse
 import yaml
 import torch
 import torch.nn as nn
+import torch.optim as optim
 from torchtext.vocab import Vocab
 from sklearn.model_selection import train_test_split
 
+from utils.model import CBOW_Model, SkipGram_Model
 from utils.dataloader import (
     get_dataloader_and_vocab,
     get_custom_dataloader_and_vocab
 )
 from utils.trainer import Trainer
 from utils.helper import (
-    get_model_class,
-    get_optimizer_class,
     get_lr_scheduler,
-    save_config,
-    save_vocab,
+    saveVocab,
 )
 
 
@@ -74,12 +73,10 @@ def train(
     vocab_size = len(vocab.get_stoi())
     print(f"Vocabulary size: {vocab_size}")
 
-    model_class = get_model_class(config["model_name"])
-    model = model_class(vocab_size=vocab_size)
+    model = SkipGram_Model(vocab_size=vocab_size)
     criterion = nn.CrossEntropyLoss()
 
-    optimizer_class = get_optimizer_class(config["optimizer"])
-    optimizer = optimizer_class(model.parameters(), lr=config["learning_rate"])
+    optimizer = optim.Adam(model.parameters(), lr=config["learning_rate"])
     lr_scheduler = get_lr_scheduler(optimizer, config["epochs"], verbose=True)
 
     # If transfer learning is enabled, load the pre-trained model.
@@ -119,8 +116,7 @@ def train(
 
     trainer.save_model()
     trainer.save_loss()
-    save_vocab(vocab, config["model_dir"])
-    save_config(config, config["model_dir"])
+    saveVocab(vocab, config["model_dir"])
     print("Model artifacts saved to folder:", config["model_dir"])
 
 
