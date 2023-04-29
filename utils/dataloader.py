@@ -2,8 +2,7 @@ import torch
 from functools import partial
 from torch.utils.data import (
     DataLoader,
-    DataSet,
-    IterableDataset
+    Dataset,
 )
 from torchtext.vocab import Vocab
 from torchtext.data import get_tokenizer
@@ -17,7 +16,7 @@ class Word2VecDataLoader:
     def __init__(self, config: ModelConfig):
         self.config = config
 
-    def build_vocab(self, data_iter: DataSet, tokenizer):
+    def build_vocab(self, data_iter: Dataset, tokenizer):
         """Builds vocabulary from iterator
 
         Args:
@@ -144,7 +143,7 @@ class Word2VecDataLoader:
         batch_output = torch.tensor(batch_output, dtype=torch.long)
         return batch_input, batch_output
 
-    def get_dataloader_and_vocab(self, model, data_iter: DataSet, batch_size: int, shuffle: bool, vocab: Vocab = None):
+    def get_dataloader_and_vocab(self, model, data_iter: Dataset, batch_size: int, shuffle: bool, vocab: Vocab = None):
         """Get the dataloader with the model, dataset, and optional vocabulary.
 
         Args:
