@@ -1,6 +1,13 @@
+from enum import Enum
+
 import torch.nn as nn
 
 from utils.config import ModelConfig
+
+
+class ModelType(Enum):
+    CBOW = 1
+    SKIPGRAM = 2
 
 
 class CBOWModel(nn.Module):

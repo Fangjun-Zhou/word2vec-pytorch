@@ -9,7 +9,7 @@ from torchtext.data import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 
 from utils.config import ModelConfig
-from utils.model import CBOWModel, SkipGramModel
+from utils.model import ModelType
 
 
 class Word2VecDataLoader:
@@ -143,11 +143,18 @@ class Word2VecDataLoader:
         batch_output = torch.tensor(batch_output, dtype=torch.long)
         return batch_input, batch_output
 
-    def get_dataloader_and_vocab(self, model, data_iter: Dataset, batch_size: int, shuffle: bool, vocab: Vocab = None):
+    def get_dataloader_and_vocab(
+            self,
+            model: ModelType,
+            data_iter: Dataset,
+            batch_size: int,
+            shuffle: bool,
+            vocab: Vocab = None
+    ):
         """Get the dataloader with the model, dataset, and optional vocabulary.
 
         Args:
-            model (): the model used for the training.
+            model: the model used for the training.
             data_iter: the dataset.
             batch_size: the batch size.
             shuffle: If the the DataLoader requires shuffle.
@@ -164,9 +171,9 @@ class Word2VecDataLoader:
 
         def text_pipeline(x): return vocab(tokenizer(x))
 
-        if isinstance(model, CBOWModel):
+        if model == ModelType.CBOW:
             collate_fn = self.collate_cbow
-        elif isinstance(model, SkipGramModel):
+        elif model == ModelType.SKIPGRAM:
             collate_fn = self.collate_skipgram
         else:
             raise ValueError("Unsupported model.")
