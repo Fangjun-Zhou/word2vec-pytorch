@@ -28,8 +28,10 @@ class Trainer:
     ):
         self.model = model
         self.epochs = epochs
+        # The train_dataloader need to be a map style dataloader.
         self.train_dataloader = train_dataloader
         self.train_steps = train_steps
+        # The val_dataloader need to be a map style dataloader.
         self.val_dataloader = val_dataloader
         self.val_steps = val_steps
         self.criterion = criterion
