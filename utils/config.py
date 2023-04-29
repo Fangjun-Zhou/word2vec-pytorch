@@ -7,8 +7,8 @@ class ModelConfig:
         embedDim=256,
         embedMaxNorm=1,
     ):
-        self.nWords = nWords
-        self.minWordFreq = minWordFreq
-        self.maxSeqLength = maxSeqLength
-        self.embedDim = embedDim
-        self.embedMaxNorm = embedMaxNorm
+        self.n_words = nWords
+        self.min_word_freq = minWordFreq
+        self.max_seq_length = maxSeqLength
+        self.embed_dim = embedDim
+        self.embed_max_norm = embedMaxNorm
