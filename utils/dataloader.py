@@ -8,7 +8,7 @@ from torchtext.vocab import Vocab
 from torchtext.data import get_tokenizer
 from torchtext.vocab import build_vocab_from_iterator
 
-from utils.config import ModelConfig
+from utils.model_config import ModelConfig
 from utils.model import ModelType
 
 

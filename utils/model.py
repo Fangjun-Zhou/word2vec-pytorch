@@ -2,7 +2,7 @@ from enum import Enum
 
 import torch.nn as nn
 
-from utils.config import ModelConfig
+from utils.model_config import ModelConfig
 
 
 class ModelType(Enum):
