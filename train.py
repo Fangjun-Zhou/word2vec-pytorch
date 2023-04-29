@@ -14,7 +14,7 @@ from utils.dataloader import (
 from utils.trainer import Trainer
 from utils.helper import (
     get_lr_scheduler,
-    saveVocab,
+    save_vocab,
 )
 
 
@@ -116,7 +116,7 @@ def train(
 
     trainer.save_model()
     trainer.save_loss()
-    saveVocab(vocab, config["model_dir"])
+    save_vocab(vocab, config["model_dir"])
     print("Model artifacts saved to folder:", config["model_dir"])
 
 

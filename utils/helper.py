@@ -8,7 +8,7 @@ from torch.optim.lr_scheduler import LambdaLR
 from torchtext.vocab import Vocab
 
 
-def getLrScheduler(optimizer: optim.Optimizer, total_epochs: int, verbose: bool = True):
+def get_lr_scheduler(optimizer: optim.Optimizer, total_epochs: int, verbose: bool = True):
     """
     Scheduler to linearly decrease learning rate, 
     so thatlearning rate after the last epoch is 0.
@@ -21,23 +21,23 @@ def getLrScheduler(optimizer: optim.Optimizer, total_epochs: int, verbose: bool 
     Returns: LambdaLR scheduler.
 
     """
-    def lrLambda(epoch): return (total_epochs - epoch) / total_epochs
-    lrScheduler = LambdaLR(optimizer, lr_lambda=lrLambda, verbose=verbose)
-    return lrScheduler
+    def lr_lambda(epoch): return (total_epochs - epoch) / total_epochs
+    lr_scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda, verbose=verbose)
+    return lr_scheduler
 
 
-def saveVocab(vocab: Vocab, modelDir: str):
+def save_vocab(vocab: Vocab, model_dir: str):
     """Save vocab file to `model_dir` directory.
 
     Args:
         vocab: the vocab to save.
         model_dir: the directory to store the vocab.
     """
-    vocabPath = os.path.join(modelDir, "vocab.pt")
-    torch.save(vocab, vocabPath)
+    vocab_path = os.path.join(model_dir, "vocab.pt")
+    torch.save(vocab, vocab_path)
 
 
-def loadVocab(modelDir: str):
+def load_vocab(model_dir: str):
     """Load vocab file from `model_dir` directory.
 
     Args:
@@ -47,5 +47,5 @@ def loadVocab(modelDir: str):
 
     """
     """Load vocab file from `model_dir` directory"""
-    vocab = torch.load(os.path.join(modelDir, "vocab.pt"))
+    vocab = torch.load(os.path.join(model_dir, "vocab.pt"))
     return vocab
