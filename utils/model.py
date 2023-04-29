@@ -1,23 +1,23 @@
 import torch.nn as nn
 
-from utils.constants import EMBED_DIMENSION, EMBED_MAX_NORM
+from utils.config import ModelConfig
 
 
-class CBOW_Model(nn.Module):
+class CBOWModel(nn.Module):
     """
     Implementation of CBOW model described in paper:
     https://arxiv.org/abs/1301.3781
     """
 
-    def __init__(self, vocab_size: int):
-        super(CBOW_Model, self).__init__()
+    def __init__(self, vocab_size: int, config: ModelConfig):
+        super(CBOWModel, self).__init__()
         self.embeddings = nn.Embedding(
             num_embeddings=vocab_size,
-            embedding_dim=EMBED_DIMENSION,
-            max_norm=EMBED_MAX_NORM,
+            embedding_dim=config.embed_dim,
+            max_norm=config.embed_max_norm,
         )
         self.linear = nn.Linear(
-            in_features=EMBED_DIMENSION,
+            in_features=config.embed_dim,
             out_features=vocab_size,
         )
 
@@ -28,21 +28,21 @@ class CBOW_Model(nn.Module):
         return x
 
 
-class SkipGram_Model(nn.Module):
+class SkipGramModel(nn.Module):
     """
     Implementation of Skip-Gram model described in paper:
     https://arxiv.org/abs/1301.3781
     """
 
-    def __init__(self, vocab_size: int):
-        super(SkipGram_Model, self).__init__()
+    def __init__(self, vocab_size: int, config: ModelConfig):
+        super(SkipGramModel, self).__init__()
         self.embeddings = nn.Embedding(
             num_embeddings=vocab_size,
-            embedding_dim=EMBED_DIMENSION,
-            max_norm=EMBED_MAX_NORM,
+            embedding_dim=config.embed_dim,
+            max_norm=config.embed_max_norm,
         )
         self.linear = nn.Linear(
-            in_features=EMBED_DIMENSION,
+            in_features=config.embed_dim,
             out_features=vocab_size,
         )
 

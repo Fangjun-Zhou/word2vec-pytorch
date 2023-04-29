@@ -6,7 +6,7 @@ import torch.optim as optim
 from torchtext.vocab import Vocab
 from sklearn.model_selection import train_test_split
 
-from utils.model import CBOW_Model, SkipGram_Model
+from utils.model import CBOWModel, SkipGramModel
 from utils.dataloader import (
     get_dataloader_and_vocab,
     get_custom_dataloader_and_vocab
@@ -73,7 +73,7 @@ def train(
     vocab_size = len(vocab.get_stoi())
     print(f"Vocabulary size: {vocab_size}")
 
-    model = SkipGram_Model(vocab_size=vocab_size)
+    model = SkipGramModel(vocab_size=vocab_size)
     criterion = nn.CrossEntropyLoss()
 
     optimizer = optim.Adam(model.parameters(), lr=config["learning_rate"])
