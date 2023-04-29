@@ -24,7 +24,6 @@ class Trainer:
         lr_scheduler,
         device,
         model_dir,
-        model_name,
     ):
         self.model = model
         self.epochs = epochs
@@ -43,7 +42,6 @@ class Trainer:
         # Check if the path exists, if not create it.
         if not os.path.exists(self.model_dir):
             os.makedirs(self.model_dir)
-        self.model_name = model_name
 
         self.loss = {"train": [], "val": []}
 
