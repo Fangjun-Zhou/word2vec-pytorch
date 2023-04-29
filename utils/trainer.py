@@ -53,6 +53,7 @@ class Trainer:
         self.model.to(self.device)
 
     def train(self):
+        """ Main function for training. """
         best_val_loss = np.inf
         best_model = copy.deepcopy(self.model.state_dict())
         # Record the start time.
@@ -69,11 +70,14 @@ class Trainer:
                 )
             )
             print(
-                "Time elapsed: {:.2f} min, average epoch time: {:.2f} min, predicting finish time: {:.2f} min".format(
-                    (time.time() - start_time) / 60,
-                    (time.time() - start_time) / (epoch + 1) / 60,
-                    (time.time() - start_time) /
-                    (epoch + 1) / 60 * self.epochs,
+                (
+                    "Time elapsed: {:.2f} min, average epoch time: {:.2f} min,"
+                    " predicting finish time: {:.2f} min"
+                ).format(
+                        (time.time() - start_time) / 60,
+                        (time.time() - start_time) / (epoch + 1) / 60,
+                        (time.time() - start_time) /
+                        (epoch + 1) / 60 * self.epochs,
                 )
             )
 
@@ -95,6 +99,7 @@ class Trainer:
         torch.save(best_model, model_path)
 
     def _train_epoch(self):
+        """ Helper function for one training epoch """
         self.model.train()
         running_loss = []
 
@@ -123,9 +128,14 @@ class Trainer:
         self.loss["train"].append(epoch_loss)
 
     def _validate_epoch(self):
+        """ Helper function for one validation epoch """
         self.model.eval()
         running_loss = []
 
+        if self.train_steps < 0:
+            batch_num = len(self.val_dataloader)
+        else:
+            batch_num = min(self.val_steps, len(self.val_dataloader))
         with torch.no_grad():
             for i, batch_data in enumerate(self.val_dataloader, 1):
                 inputs = batch_data[0].to(self.device)
@@ -136,14 +146,20 @@ class Trainer:
 
                 running_loss.append(loss.item())
 
+                print(f"Batch: {i}/{batch_num}", end="\r")
+
                 if i == self.val_steps:
                     break
 
         epoch_loss = np.mean(running_loss)
         self.loss["val"].append(epoch_loss)
 
-    def _save_checkpoint(self, epoch):
-        """Save model checkpoint to `self.model_dir` directory"""
+    def _save_checkpoint(self, epoch: int):
+        """Save model checkpoint to `self.model_dir` directory
+
+        Args:
+            epoch: current epoch number.
+        """
         epoch_num = epoch + 1
         if epoch_num % self.checkpoint_frequency == 0:
             model_path = "checkpoint_{}.pt".format(str(epoch_num).zfill(3))
