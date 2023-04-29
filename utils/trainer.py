@@ -72,12 +72,16 @@ class Trainer:
             print(
                 (
                     "Time elapsed: {:.2f} min, average epoch time: {:.2f} min,"
-                    " predicting finish time: {:.2f} min"
+                    " predicting training time left: {:.2f} min"
                 ).format(
                         (time.time() - start_time) / 60,
                         (time.time() - start_time) / (epoch + 1) / 60,
-                        (time.time() - start_time) /
-                        (epoch + 1) / 60 * self.epochs,
+                        (
+                            (time.time() - start_time) /
+                            (epoch + 1) / 60 * self.epochs
+                        )-(
+                            (time.time() - start_time) / 60
+                        ),
                 )
             )
 
@@ -119,10 +123,11 @@ class Trainer:
 
             running_loss.append(loss.item())
 
-            print(f"Batch: {i}/{batch_num}", end="\r")
+            print(f"Training batch: {i}/{batch_num}", end="\r")
 
             if i == self.train_steps:
                 break
+        print()
 
         epoch_loss = np.mean(running_loss)
         self.loss["train"].append(epoch_loss)
@@ -146,10 +151,11 @@ class Trainer:
 
                 running_loss.append(loss.item())
 
-                print(f"Batch: {i}/{batch_num}", end="\r")
+                print(f"Validation batch: {i}/{batch_num}", end="\r")
 
                 if i == self.val_steps:
                     break
+        print()
 
         epoch_loss = np.mean(running_loss)
         self.loss["val"].append(epoch_loss)
