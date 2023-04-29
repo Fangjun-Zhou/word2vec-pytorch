@@ -1,14 +1,14 @@
 class ModelConfig:
     def __init__(
         self,
-        nWords=4,
-        minWordFreq=50,
-        maxSeqLength=256,
-        embedDim=256,
-        embedMaxNorm=1,
+        n_words=4,
+        min_word_freq=50,
+        max_seq_length=256,
+        embed_dim=256,
+        embed_max_norm=1,
     ):
-        self.n_words = nWords
-        self.min_word_freq = minWordFreq
-        self.max_seq_length = maxSeqLength
-        self.embed_dim = embedDim
-        self.embed_max_norm = embedMaxNorm
+        self.n_words = n_words
+        self.min_word_freq = min_word_freq
+        self.max_seq_length = max_seq_length
+        self.embed_dim = embed_dim
+        self.embed_max_norm = embed_max_norm
